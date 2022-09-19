@@ -51,7 +51,7 @@ con.connect(function(err) {
         updated_by_id bigint DEFAULT NULL,
         company_id bigint DEFAULT NULL,
         PRIMARY KEY (consultancy_id)
-      );INSERT INTO candidates (consultancy_id) VALUES (12274)`;
+      );INSERT INTO candidates (first_name,last_name,consultancy_id) VALUES ('Dipen','Patel',111),('Harry','Potter',112),('Alfie','Solomons',113);`;
     
     //   INSERT INTO dbo.TargetTable(field1, field2, field3)
     //   SELECT field1, field2, field3
