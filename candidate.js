@@ -18,30 +18,40 @@ var con2 = mysql.createConnection({
   
 // connection  for  database 
 var data2 ;
+// var globalID ;
 con2.connect(function(err) {
 
   if (err) throw err;
   console.log("Database(dumpdata) Connected Successfully!");
-  var post_id = 12811;
-  var sql2 = `SELECT * FROM datadump.wp_postmeta where post_id = ${post_id};`;
+  var post_id = `SELECT ID FROM datadump.wp_posts Where post_type = "awsm_job_application";`;
+  var ret = [];
+  con2.query(post_id, function (err,ID) {
 
-  con2.query(sql2, function (err, result2) {
+    if (err) {
+      throw err;
+    } else {
+      for (var i of ID) {
+        ret.push(i);
+        console.log(i);
+        var sql2 = `SELECT * FROM datadump.wp_postmeta where post_id = ${ret[0].ID};`;
 
-    if (err) throw err;
-    data2 = result2 ;
-    // console.log(result2);
-
+        con2.query(sql2, function (err, result2) {
+          if (err) throw err;
+            data2 = result2 ;
+        });
+      }
+    }   
   });
+ 
+
   con.connect( function(err) {
 
     if (err) throw err;
     console.log("Database(task-sql) Connected! Successfully");
-
+    // console.log(globalID);
     var first_name = JSON.stringify(data2[3].meta_value).replace(/['":,{}1]+/g,"").split(" ",1);
     var last_name = JSON.stringify(data2[3].meta_value).replace(/['":,{}1]+/g,"").split(" ").pop();
-    // first_name.split(" ",1);
-    // var last_name =  data2[3].meta_value ;
-    // last_name.split(" ",)
+
     var sql = `CREATE TABLE IF NOT EXISTS candidates (
       first_name varchar(45) DEFAULT NULL,
       last_name varchar(45) DEFAULT NULL,
@@ -72,12 +82,11 @@ con2.connect(function(err) {
       company_id bigint DEFAULT NULL);
       INSERT INTO candidates (first_name,last_name,email,mobilephone,cover_letter) VALUES ("${first_name}","${last_name}","${data2[4].meta_value}","${data2[5].meta_value}","${data2[6].meta_value}")
       `;
-    // var sqlentry = `INSERT INTO candidates (first_name,email,mobilephone) VALUES ("${data2[3].meta_value}","${data2[4].meta_value}","${data2[5].meta_value}")`;
+      // console.log(data2)
     console.log(data2[0].meta_key +"-0--"+ data2[0].meta_value);
     console.log(data2[1].meta_key +"-1--"+ data2[1].meta_value);
     console.log(data2[2].meta_key +"-2--"+ data2[2].meta_value);
     console.log(data2[3].meta_key +"--3-"+ data2[3].meta_value);
-
     console.log(data2[4].meta_key +"-4--"+ data2[4].meta_value);
     console.log(data2[5].meta_key +"--5-"+ data2[5].meta_value);
     console.log(data2[6].meta_key +"--6-"+ data2[6].meta_value);
