@@ -18,19 +18,25 @@ var con2 = mysql.createConnection({
 
 // connection  for  database
 var data2;
+var ret = [];
+
 console.log("Database(dumpdata) Connected Successfully!", data2);
 con2.connect(function (err) {
   if (err) throw err;
   console.log("Database(dumpdata) Connected Successfully!");
   var post_id = `SELECT ID FROM datadump.wp_posts Where post_type = "awsm_job_application";`;
-  var ret = [];
+
   con2.query(post_id, function (err, ID) {
     if (err) {
       throw err;
     } else {
+      console.log(ID)
+      Object.keys(ID).forEach(function(key) {
+        var row = ID[key];
+        console.log(row.ID)
+      });
       for (var i of ID) {
-        ret.push(i);
-        // console.log(i);
+        // console.log(ret[0].ID);
         var sql2 = `SELECT * FROM datadump.wp_postmeta where post_id = ${ret[0].ID};`;
         con2.query(sql2, function (err, result2) {
           if (err) throw err;
