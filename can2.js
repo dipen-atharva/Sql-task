@@ -22,9 +22,9 @@ const knex2 = require('knex')({
   }
 });
 
-knex.schema.hasTable('can2').then(function (exists) {
+knex.schema.hasTable('candidates').then(function (exists) {
   if (!exists) {
-    return knex.schema.createTable('can2', function (t) {
+    return knex.schema.createTable('candidates', function (t) {
       t.increments('id').primary();
       t.integer('wp_post_id', 45);
       t.text('wp_post_meta_data', 500);
@@ -81,7 +81,7 @@ knex2('wp_posts').where({
 
           var first_name = result.get('awsm_applicant_name').split(" ",1).toString();
           var last_name = result.get('awsm_applicant_name').split(" ").pop();
-          return knex('can2')
+          return knex('candidates')
             .select()
             .where({
               'wp_post_id': result.get('awsm_job_id'),
@@ -90,7 +90,7 @@ knex2('wp_posts').where({
               if (rows.length === 0) {
 
                 // no matching records found
-                return knex('can2').insert({
+                return knex('candidates').insert({
                   wp_post_id: result.get('awsm_job_id'),
                   applied_for: result.get('awsm_apply_for'),
                   first_name: first_name,
