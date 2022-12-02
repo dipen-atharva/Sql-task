@@ -10,20 +10,20 @@ module.exports = {
         database: 'datadump',
         multipleStatements: true,
         debug: true,
-        log: {
-          warn(message) {
-            console.log(message)
-          },
-          error(message) {
-            console.log(message)
-          },
-          deprecate(message) {
-            console.log(message)
-          },
-          debug(message) {
-            console.log(message)
-          }
-        },
+        // log: {
+        //   warn(message) {
+        //     console.log(message)
+        //   },
+        //   error(message) {
+        //     console.log(message)
+        //   },
+        //   deprecate(message) {
+        //     console.log(message)
+        //   },
+        //   debug(message) {
+        //     console.log(message)
+        //   }
+        // },
       },
       migrations: {
         directory: './../db/migrations',
@@ -73,20 +73,20 @@ module.exports = {
         database: process.env.DB_NAME,
         multipleStatements: true,
         debug: true,
-        log: {
-          warn(message) {
-            console.log(message)
-          },
-          error(message) {
-            console.log(message)
-          },
-          deprecate(message) {
-            console.log(message)
-          },
-          debug(message) {
-            console.log(message)
-          }
-        },
+        // log: {
+        //   warn(message) {
+        //     console.log(message)
+        //   },
+        //   error(message) {
+        //     console.log(message)
+        //   },
+        //   deprecate(message) {
+        //     console.log(message)
+        //   },
+        //   debug(message) {
+        //     console.log(message)
+        //   }
+        // },
       },
       migrations: {
         directory: './../db/migrations',
