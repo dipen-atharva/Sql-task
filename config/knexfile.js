@@ -8,7 +8,22 @@ module.exports = {
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
         database: 'datadump',
-        multipleStatements: true
+        multipleStatements: true,
+        debug: true,
+        log: {
+          warn(message) {
+            console.log(message)
+          },
+          error(message) {
+            console.log(message)
+          },
+          deprecate(message) {
+            console.log(message)
+          },
+          debug(message) {
+            console.log(message)
+          }
+        },
       },
       migrations: {
         directory: './../db/migrations',
@@ -56,7 +71,22 @@ module.exports = {
         port: process.env.PORT,
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
-        multipleStatements: true
+        multipleStatements: true,
+        debug: true,
+        log: {
+          warn(message) {
+            console.log(message)
+          },
+          error(message) {
+            console.log(message)
+          },
+          deprecate(message) {
+            console.log(message)
+          },
+          debug(message) {
+            console.log(message)
+          }
+        },
       },
       migrations: {
         directory: './../db/migrations',
