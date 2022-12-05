@@ -9,7 +9,7 @@ module.exports = {
         password: process.env.DB_PASSWORD,
         database: 'datadump',
         multipleStatements: true,
-        debug: true,
+        debug: false,
         // log: {
         //   warn(message) {
         //     console.log(message)
@@ -72,7 +72,7 @@ module.exports = {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
         multipleStatements: true,
-        debug: true,
+        debug: false,
         // log: {
         //   warn(message) {
         //     console.log(message)
