@@ -2,7 +2,7 @@ require('dotenv').config()
 const { sourceKnex, destKnex } = require('./db/knex');
 const rowLimit = 10;
 let end = rowLimit - 1;
-let rows = [];
+
 const insert = async () => {
 
   const mxCrtdDt = await destKnex('candidates').max('wp_created_at', { as: 'mxD' })
@@ -12,32 +12,37 @@ const insert = async () => {
   }
   console.log("---+++++++++++++++-INSERT QUERY--+++++++++++++++--", "---", mxCrtdDt[0].mxD)
   let wpPosts = [];
-
+  let records = [];
   for (let start = 0; start < end;) {
-    console.log("---+++++++++++++++-INSERT QUERY--+++++++++++start++++--", start, end)
+    console.log("---+++++++++++++++-START--END--+++++++++++++++--", start, end)
 
-    if (start > 70) {
+    if (records.length == 0) {
+      // console.log("Pass");
+    }
+    else if (records[0] !== rowLimit){
+      console.log("Break");
       break;
     }
-    console.log(rows)
-    wpPosts.push(sourceKnex('wp_posts')
+    console.log(records)
+
+    wpPosts.push(await sourceKnex('wp_posts')
       // .join('wp_postmeta', 'wp_posts.ID', '=', 'wp_postmeta.post_id')
       .where('wp_posts.post_type', '=', "awsm_job_application")
       .where('wp_posts.post_date', '>', mxCrtdDt[0].mxD)
       // .select("wp_posts.ID", 'wp_postmeta.meta_key')
       .limit(rowLimit)
       .offset(start)
-      .then((postData) => {
+      .then((sourcePostData) => {
 
-        if (postData.length !== rowLimit) {
-          console.log(postData.length, "----------");
-          rows.push(postData.length)
+        if (sourcePostData.length !== rowLimit) {
+          console.log(sourcePostData.length, "-----INCOMPLETE-----");
+          records.push(sourcePostData.length)
         } else {
-          console.log(postData.length);
+          console.log(sourcePostData.length);
         }
 
         return Promise.all(
-          postData.map(async (post) => {
+          sourcePostData.map(async (post) => {
             console.log(post.ID, "++++++++++++++++++++");
             const sourceMetaData = await sourceKnex('wp_postmeta').where({
               post_id: post.ID
