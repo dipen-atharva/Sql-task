@@ -9,6 +9,7 @@ const insert = async () => {
     console.log("inside if block")
     mxCrtdDt[0].mxD = 0;
   }
+  // await destKnex.raw("set time zone 'utc'");
   console.log("---+++++++++++++++-INSERT QUERY--+++++++++++++++--", "---", mxCrtdDt[0].mxD)
   let wpPosts = [];
   let start = 0;
@@ -17,14 +18,11 @@ const insert = async () => {
   while (decide) {
     console.log("---+++++++++++++++-START-+++++++++++++++--", start)
     wpPosts.push(await sourceKnex('wp_posts')
-      // .join('wp_postmeta', 'wp_posts.ID', '=', 'wp_postmeta.post_id')
       .where('wp_posts.post_type', '=', "awsm_job_application")
       .where('wp_posts.post_date', '>', mxCrtdDt[0].mxD)
-      // .select("wp_posts.ID", 'wp_postmeta.meta_key')
       .limit(rowLimit)
       .offset(start)
       .then((sourcePostData) => {
-
         if (sourcePostData.length !== rowLimit) {
           console.log(sourcePostData.length, "-----INCOMPLETE-----");
           decide = false;
