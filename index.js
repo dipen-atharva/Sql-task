@@ -1,15 +1,12 @@
 require('dotenv').config()
 const { sourceKnex, destKnex } = require('./db/knex');
-const rowLimit = 5;
-
+const rowLimit = 10;
 const insert = async () => {
 
   const mxCrtdDt = await destKnex('candidates').max('wp_created_at', { as: 'mxD' })
   if (!mxCrtdDt[0].mxD) {
-    console.log("inside if block")
     mxCrtdDt[0].mxD = 0;
   }
-  // await destKnex.raw("set time zone 'utc'");
   console.log("---+++++++++++++++-INSERT QUERY--+++++++++++++++--", "---", mxCrtdDt[0].mxD)
   let wpPosts = [];
   let start = 0;
@@ -42,6 +39,7 @@ const insert = async () => {
               .where({
                 'wp_post_id': post.ID,
               })
+
             if (destCandidates.length === 0) {
               await destKnex('candidates').insert({
                 wp_post_id: post.ID,
@@ -105,10 +103,7 @@ const update = async () => {
             sourcePostMeta.map(function (element) {
               return result.set(element.meta_key, element.meta_value)
             })
-            // console.log(id.ID)
-            // console.log(Object.fromEntries(result));
-
-            const updtCandidates = await destKnex('candidates')
+            await destKnex('candidates')
               .where({ wp_post_id: id.ID })
               .update({
                 wp_post_id: id.ID,
