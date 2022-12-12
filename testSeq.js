@@ -25,14 +25,12 @@ const sequelize = new Sequelize('sql2postgre', 'test', 'test', {
   dialect: 'postgres',
 });
 const User = sequelize.define('user', {
-  // Model attributes are defined here
   firstName: {
     type: DataTypes.STRING,
     allowNull: false
   },
   lastName: {
     type: DataTypes.STRING
-    // allowNull defaults to true
   },
   created_At :{
     type : DataTypes.TIME
@@ -40,8 +38,6 @@ const User = sequelize.define('user', {
   updated_At :{
     type : DataTypes.TIME
   }
-}, {
-  // Other model options go here
 });
 const firstName = 'Roger'
 const lastName = 'Sharma'

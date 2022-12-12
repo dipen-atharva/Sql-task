@@ -16,7 +16,9 @@
     "dotenv": "^16.0.3",
     "knex": "^2.3.0",
     "mysql": "^2.18.1",
-    "pg": "^8.8.0"
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.26.0"
   },
   "devDependencies": {
     "nvm": "^0.0.4"

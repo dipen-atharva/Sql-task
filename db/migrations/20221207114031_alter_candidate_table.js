@@ -9,8 +9,8 @@ exports.up = function (knex) {
     t.string('wp_first_name');
     t.string('wp_last_name');
     t.text('wp_email');
-    t.timestamp('wp_created_at');
-    t.timestamp('wp_updated_at');
+    t.timestamp('wp_created_at',{useTz : false});
+    t.timestamp('wp_updated_at',{useTz : false});
     t.string('wp_mobilephone');
     t.string('wp_agree_privacy_policy');
     t.text('wp_cover_letter');

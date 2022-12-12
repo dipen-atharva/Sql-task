@@ -1,13 +1,19 @@
 require('dotenv').config()
+// var types = require('pg').types;
+// types.setTypeParser(1114, function (stringValue) {
+//   console.log("=======", new Date(Date.parse(stringValue)))
+//   return new Date(Date.parse(stringValue));
+// })
 const { sourceKnex, destKnex } = require('./db/knex');
 const rowLimit = 10;
+
 const insert = async () => {
 
   const mxCrtdDt = await destKnex('candidates').max('wp_created_at', { as: 'mxD' })
   if (!mxCrtdDt[0].mxD) {
     mxCrtdDt[0].mxD = 0;
   }
-  console.log("---+++++++++++++++-INSERT QUERY--+++++++++++++++--", "---", mxCrtdDt[0].mxD)
+  console.log("---++++++-INSERT QUERY--++++Max Crdt Dt++++++++--", mxCrtdDt[0].mxD)
   let wpPosts = [];
   let start = 0;
   let decide = true;
@@ -39,6 +45,7 @@ const insert = async () => {
               .where({
                 'wp_post_id': post.ID,
               })
+            console.log(post.post_date, "++++++++")
 
             if (destCandidates.length === 0) {
               await destKnex('candidates').insert({
@@ -58,9 +65,9 @@ const insert = async () => {
                   meta_data: Object.fromEntries(result)
                 })
               })
-              console.log("+++++Data added", post.ID)
+              console.log("Data added", post.ID)
             } else {
-              console.log("+++++Already added", post.ID)
+              console.log("Already added", post.ID)
             }
           })
         )
@@ -74,7 +81,7 @@ const insert = async () => {
 const update = async () => {
 
   const mxUpdtDt = await destKnex('candidates').max('wp_updated_at', { as: 'mxD' })
-  console.log("---+++++++++++++++-UPDATE QUERY--+++++++++++++++--", mxUpdtDt[0].mxD)
+  console.log("---++++++++-UPDATE QUERY--++++Max Updt Dt++++++--", mxUpdtDt[0].mxD)
   let wpPosts = [];
   let start = 0;
   let decide = true;
@@ -145,5 +152,19 @@ const run = async () => {
 run();
 
 
+
+/*
+=>with knex config and settype
+  == max created===== 2021 - 10 - 07T18: 31: 00.000Z
+  update ===== 2021 - 11 - 27T11: 24: 49.000Z
+
+  with knex config off and settype
+    ====max create == 2021 - 10 - 07T13: 01: 00.000Z
+       = update ===== 2021 - 11 - 27T05: 54:
+
+  wihtout settype
+  C====2021-10-07T18:31:00.000Z
+  U===2021-11-27T11:24:49.000Z
+*/
 
 
